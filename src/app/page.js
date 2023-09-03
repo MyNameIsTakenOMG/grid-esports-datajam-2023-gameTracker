@@ -1,10 +1,11 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import Image from 'next/image';
+import styles from './page.module.css';
+import { Box } from '@mui/material';
 
 export default function Home() {
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
+      {/* <div className={styles.description}>
         <p>
           Get started by editing&nbsp;
           <code className={styles.code}>src/app/page.js</code>
@@ -89,7 +90,81 @@ export default function Home() {
             Instantly deploy your Next.js site to a shareable URL with Vercel.
           </p>
         </a>
-      </div>
+      </div> */}
+      <Box sx={{ width: '100%', height: '100%', overflowY: 'auto' }}>
+        main
+        <div
+          style={{
+            width: '100px',
+            height: '100px',
+            backgroundColor: 'red',
+            color: 'white',
+          }}
+        >
+          hello
+        </div>
+        <div
+          style={{
+            width: '100px',
+            height: '100px',
+            backgroundColor: 'red',
+            color: 'white',
+          }}
+        >
+          hello
+        </div>
+        <div
+          style={{
+            width: '100px',
+            height: '100px',
+            backgroundColor: 'red',
+            color: 'white',
+          }}
+        >
+          hello
+        </div>
+        <div
+          style={{
+            width: '100px',
+            height: '100px',
+            backgroundColor: 'red',
+            color: 'white',
+          }}
+        >
+          hello
+        </div>
+        <div
+          style={{
+            width: '100px',
+            height: '100px',
+            backgroundColor: 'red',
+            color: 'white',
+          }}
+        >
+          hello
+        </div>
+        <div
+          style={{
+            width: '100px',
+            height: '100px',
+            backgroundColor: 'red',
+            color: 'white',
+          }}
+        >
+          hello
+        </div>
+        <div
+          style={{
+            width: '100px',
+            height: '100px',
+            backgroundColor: 'red',
+            color: 'white',
+          }}
+        >
+          hello
+        </div>
+        <div style={{ height: '80px', width: '100%' }}></div>
+      </Box>
     </main>
-  )
+  );
 }
