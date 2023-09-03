@@ -1,170 +1,79 @@
-import Image from 'next/image';
-import styles from './page.module.css';
-import { Box } from '@mui/material';
+import { Box, Card, CardActionArea, CardContent, CardMedia, Paper, Skeleton, Typography } from '@mui/material';
+import Image from 'next/image'
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      {/* <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div> */}
+    <Box sx={{
+      display: 'flex',
+      flexFlow: 'column nowrap',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexGrow: 1
+    }}>
       <Box sx={{ width: '100%', height: '100%', overflowY: 'auto' }}>
-        main
-        <div
-          style={{
-            width: '100px',
-            height: '100px',
-            backgroundColor: 'red',
-            color: 'white',
-          }}
-        >
-          hello
-        </div>
-        <div
-          style={{
-            width: '100px',
-            height: '100px',
-            backgroundColor: 'red',
-            color: 'white',
-          }}
-        >
-          hello
-        </div>
-        <div
-          style={{
-            width: '100px',
-            height: '100px',
-            backgroundColor: 'red',
-            color: 'white',
-          }}
-        >
-          hello
-        </div>
-        <div
-          style={{
-            width: '100px',
-            height: '100px',
-            backgroundColor: 'red',
-            color: 'white',
-          }}
-        >
-          hello
-        </div>
-        <div
-          style={{
-            width: '100px',
-            height: '100px',
-            backgroundColor: 'red',
-            color: 'white',
-          }}
-        >
-          hello
-        </div>
-        <div
-          style={{
-            width: '100px',
-            height: '100px',
-            backgroundColor: 'red',
-            color: 'white',
-          }}
-        >
-          hello
-        </div>
-        <div
-          style={{
-            width: '100px',
-            height: '100px',
-            backgroundColor: 'red',
-            color: 'white',
-          }}
-        >
-          hello
-        </div>
+        {/* tournaments section  */}
+        <Box sx={{ display: 'flex', flexFlow: 'column nowrap', mb: 4 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', m: '1rem' }}>
+            <Typography variant='h6'>Tournaments</Typography>
+            <Typography variant='body1' color='orange' sx={{ cursor: 'pointer', '&:hover': { color: 'orangered' } }}>More...</Typography>
+          </Box>
+          <Card sx={{ width: 345, alignSelf: 'center' }}>
+            <CardActionArea>
+              <CardMedia
+                height='140'
+                component='img'
+                alt='The International 2022'
+                image='/dota2-TI-2022.jpeg'
+              />
+              <CardContent>
+                <Typography variant='h6'>The International 2022</Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Box>
+
+        {/* matches section  */}
+        <Box sx={{ display: 'flex', flexFlow: 'column nowrap', mb: 4 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', m: '1rem' }}>
+            <Typography variant='h6'>Matches</Typography>
+            <Typography variant='body1' color='orange' sx={{ cursor: 'pointer', '&:hover': { color: 'orangered' } }}>More...</Typography>
+          </Box>
+          <Card sx={{ width: 345, alignSelf: 'center' }}>
+            <CardActionArea>
+              <Box sx={{ display: 'flex', flexFlow: 'column nowrap' }}>
+                <Typography variant='body1' sx={{ padding: '1rem', backgroundColor: 'orange', color: 'white' }}>The International 2022</Typography>
+                <Box sx={{ display: 'flex', flexFlow: 'row nowrap', justifyContent: 'center', columnGap: 4, py: '1rem' }}>
+                  <Box sx={{ display: 'flex', flexFlow: 'column nowrap' }}>
+                    <Image width={48} height={48} alt='secret' src='/Secret-logo.png' />
+                    <Typography variant='body2' sx={{ mt: '4px' }}>Secret</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', flexFlow: 'column nowrap' }}>
+                    <Typography variant='h6' sx={{ alignSelf: 'center' }}>1:1</Typography>
+                    <Typography variant='body2' sx={{ backgroundColor: 'red', color: 'white', borderRadius: '5px' }}>ongoing</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', flexFlow: 'column nowrap' }}>
+                    <Image width={48} height={48} alt='secret' src='/tundra-esports-logo.png' />
+                    <Typography variant='body2' sx={{ mt: '4px' }}>Tundra</Typography>
+                  </Box>
+                </Box>
+              </Box>
+            </CardActionArea>
+          </Card>
+        </Box>
+
+        {/* rankings section  */}
+        <Box sx={{ display: 'flex', flexFlow: 'column nowrap', mb: 4 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', m: '1rem' }}>
+            <Typography variant='h6'>Rankings</Typography>
+            <Typography variant='body1' color='orange' sx={{ cursor: 'pointer', '&:hover': { color: 'orangered' } }}>More...</Typography>
+          </Box>
+          <Skeleton variant='rounded' width='345px' height='50px' sx={{ mb: '0.5rem', alignSelf: 'center' }} />
+          <Skeleton variant='rounded' width='345px' height='50px' sx={{ mb: '0.5rem', alignSelf: 'center' }} />
+          <Skeleton variant='rounded' width='345px' height='50px' sx={{ mb: '0.5rem', alignSelf: 'center' }} />
+        </Box>
+
         <div style={{ height: '80px', width: '100%' }}></div>
       </Box>
-    </main>
+    </Box>
   );
 }
