@@ -76,7 +76,7 @@ export default function Tournament() {
                     width={48}
                     height={48}
                     alt="secret"
-                    src="/Secret-logo.png"
+                    src="/team/Secret-logo.png"
                   />
                   <Typography variant="body2" sx={{ mt: '4px' }}>
                     Secret
@@ -104,7 +104,7 @@ export default function Tournament() {
                     width={48}
                     height={48}
                     alt="secret"
-                    src="/tundra-esports-logo.png"
+                    src="/team/tundra-esports-logo.png"
                   />
                   <Typography variant="body2" sx={{ mt: '4px' }}>
                     Tundra
@@ -142,7 +142,7 @@ export default function Tournament() {
                     width={48}
                     height={48}
                     alt="secret"
-                    src="/Secret-logo.png"
+                    src="/team/Secret-logo.png"
                   />
                   <Typography variant="body2" sx={{ mt: '4px' }}>
                     Secret
@@ -170,7 +170,7 @@ export default function Tournament() {
                     width={48}
                     height={48}
                     alt="secret"
-                    src="/tundra-esports-logo.png"
+                    src="/team/tundra-esports-logo.png"
                   />
                   <Typography variant="body2" sx={{ mt: '4px' }}>
                     Tundra
@@ -208,7 +208,7 @@ export default function Tournament() {
                     width={48}
                     height={48}
                     alt="secret"
-                    src="/Secret-logo.png"
+                    src="/team/Secret-logo.png"
                   />
                   <Typography variant="body2" sx={{ mt: '4px' }}>
                     Secret
@@ -236,7 +236,7 @@ export default function Tournament() {
                     width={48}
                     height={48}
                     alt="secret"
-                    src="/tundra-esports-logo.png"
+                    src="/team/tundra-esports-logo.png"
                   />
                   <Typography variant="body2" sx={{ mt: '4px' }}>
                     Tundra
