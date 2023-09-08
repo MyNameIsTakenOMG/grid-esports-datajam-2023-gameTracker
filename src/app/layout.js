@@ -6,6 +6,8 @@ import '@fontsource/roboto/700.css';
 import { Inter } from 'next/font/google';
 import Header from './components/Header';
 import Nav from './components/Nav';
+import { Provider } from 'react-redux';
+import store from '@/store/store';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,15 +18,17 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={inter.className}
-        style={{ display: 'flex', flexFlow: 'column nowrap' }}
-      >
-        <Header />
-        {children}
-        <Nav />
-      </body>
-    </html>
+    <Provider store={store}>
+      <html lang="en">
+        <body
+          className={inter.className}
+          style={{ display: 'flex', flexFlow: 'column nowrap' }}
+        >
+          <Header />
+          {children}
+          <Nav />
+        </body>
+      </html>
+    </Provider>
   );
 }
