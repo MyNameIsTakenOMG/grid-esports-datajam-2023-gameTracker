@@ -2,7 +2,7 @@ const { createSlice } = require('@reduxjs/toolkit');
 
 const seriesStatesSlice = createSlice({
   initialState: {
-    seriesId: '', // '2432302'
+    id: '', // '2432302'
     format: '', // 'best-of-3'
     started: null, // true/false
     finished: null, // true/false
@@ -76,6 +76,28 @@ const seriesStatesSlice = createSlice({
             ],
           },
           // team #2 ...
+        ],
+        draftActions: [
+          {
+            id: '', // "draft-action-1"
+            statePath: [
+              {
+                id: '', // "draft-action-1"
+              },
+            ],
+            sequenceNumber: null, // starting with 1
+            type: '', // ban/pick
+            drafter: {
+              id: '', // '450'
+              type: '', // 'team'
+            },
+            draftable: {
+              id: '', // "leshrac"
+              type: '', // "character"
+              name: '', // 'leshrac'
+            },
+          },
+          // other draft actions ...
         ],
       },
       // other games (finished or unfinished) ...
