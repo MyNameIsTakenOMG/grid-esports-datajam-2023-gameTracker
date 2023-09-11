@@ -1,3 +1,5 @@
+'use client';
+
 import './globals.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -6,8 +8,10 @@ import '@fontsource/roboto/700.css';
 import { Inter } from 'next/font/google';
 import Header from './components/Header';
 import Nav from './components/Nav';
-// import { Provider } from 'react-redux';
-// import store from '@/store/store';
+import { ApolloProvider } from '@apollo/client';
+import { client } from '@/apollo/client';
+import { Provider } from 'react-redux';
+import store from '@/store/store';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,17 +22,22 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    // <Provider store={store}> 
-    <html lang="en">
-      <body
-        className={inter.className}
-        style={{ display: 'flex', flexFlow: 'column nowrap' }}
-      >
-        <Header />
-        {children}
-        <Nav />
-      </body>
-    </html>
-    // </Provider> 
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <html lang="en">
+          <body
+            className={inter.className}
+            style={{ display: 'flex', flexFlow: 'column nowrap' }}
+          >
+            <Header />
+            <div className="layout">
+              {children}
+              <div style={{ height: '80px', width: '100%' }}></div>
+            </div>
+            <Nav />
+          </body>
+        </html>
+      </Provider>
+    </ApolloProvider>
   );
 }

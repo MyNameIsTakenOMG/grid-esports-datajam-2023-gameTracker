@@ -11,29 +11,54 @@ import {
   Typography,
 } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Grid from '@mui/material/Unstable_Grid2';
+import { ApolloClient, ApolloProvider, gql, useQuery } from '@apollo/client';
+import { useParams } from 'next/navigation';
+import { client, fetchSeriesStatesQuery } from '@/apollo/client';
+import { useDispatch } from 'react-redux';
+import { fetchStates } from '@/store/seriesStatesSlice';
+
+// const getSeriesStates = (sId) => gql``;
 
 export default function Sery() {
   const [value, setValue] = useState(0);
+  const params = useParams();
+
+  // const { data, loading, error } = useQuery(fetchSeriesStatesQuery, {
+  //   variables: { seriesId: params.sId },
+  // });
+
+  const dispatch = useDispatch();
 
   const handleChange = (event, newValue) => {
     console.log(newValue);
     setValue(newValue);
   };
 
+  useEffect(() => {
+    dispatch(fetchStates(params.sId));
+
+    return () => {};
+  }, []);
+
+  // if (loading) return <p>loading...</p>;
+  // if (error) return <div>error...</div>;
+
+  // if (data) console.log('data: ', data);
+
+  // useEffect(() => {
+  //   if (data) {
+  //     console.log('data: ', data);
+  //     dispatch()
+  //   }
+  //   return () => {};
+  // }, [data]);
+
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexFlow: 'column nowrap',
-        // justifyContent: 'space-between',
-        // alignItems: 'center',
-        px: '0.5rem',
-        flexGrow: 1,
-      }}
-    >
+    <>
+      {/* <ApolloProvider client={client}> */}
       <Typography variant="h6" sx={{ my: 2 }}>
         Dota2 The International 2022
       </Typography>
@@ -244,7 +269,11 @@ export default function Sery() {
                   }}
                 >
                   <AccountCircleIcon
-                    sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
+                    sx={{
+                      width: '22px',
+                      height: '22px',
+                      alignSelf: 'center',
+                    }}
                   />
                   <Typography variant="body2">Puppey</Typography>
                 </Box>
@@ -269,7 +298,11 @@ export default function Sery() {
                   }}
                 >
                   <AccountCircleIcon
-                    sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
+                    sx={{
+                      width: '22px',
+                      height: '22px',
+                      alignSelf: 'center',
+                    }}
                   />
                   <Typography variant="body2">Puppey</Typography>
                 </Box>
@@ -294,7 +327,11 @@ export default function Sery() {
                   }}
                 >
                   <AccountCircleIcon
-                    sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
+                    sx={{
+                      width: '22px',
+                      height: '22px',
+                      alignSelf: 'center',
+                    }}
                   />
                   <Typography variant="body2">Puppey</Typography>
                 </Box>
@@ -319,7 +356,11 @@ export default function Sery() {
                   }}
                 >
                   <AccountCircleIcon
-                    sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
+                    sx={{
+                      width: '22px',
+                      height: '22px',
+                      alignSelf: 'center',
+                    }}
                   />
                   <Typography variant="body2">Puppey</Typography>
                 </Box>
@@ -344,7 +385,11 @@ export default function Sery() {
                   }}
                 >
                   <AccountCircleIcon
-                    sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
+                    sx={{
+                      width: '22px',
+                      height: '22px',
+                      alignSelf: 'center',
+                    }}
                   />
                   <Typography variant="body2">Puppey</Typography>
                 </Box>
@@ -404,7 +449,11 @@ export default function Sery() {
                   }}
                 >
                   <AccountCircleIcon
-                    sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
+                    sx={{
+                      width: '22px',
+                      height: '22px',
+                      alignSelf: 'center',
+                    }}
                   />
                   <Typography variant="body2">Puppey</Typography>
                 </Box>
@@ -429,7 +478,11 @@ export default function Sery() {
                   }}
                 >
                   <AccountCircleIcon
-                    sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
+                    sx={{
+                      width: '22px',
+                      height: '22px',
+                      alignSelf: 'center',
+                    }}
                   />
                   <Typography variant="body2">Puppey</Typography>
                 </Box>
@@ -454,7 +507,11 @@ export default function Sery() {
                   }}
                 >
                   <AccountCircleIcon
-                    sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
+                    sx={{
+                      width: '22px',
+                      height: '22px',
+                      alignSelf: 'center',
+                    }}
                   />
                   <Typography variant="body2">Puppey</Typography>
                 </Box>
@@ -479,7 +536,11 @@ export default function Sery() {
                   }}
                 >
                   <AccountCircleIcon
-                    sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
+                    sx={{
+                      width: '22px',
+                      height: '22px',
+                      alignSelf: 'center',
+                    }}
                   />
                   <Typography variant="body2">Puppey</Typography>
                 </Box>
@@ -504,7 +565,11 @@ export default function Sery() {
                   }}
                 >
                   <AccountCircleIcon
-                    sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
+                    sx={{
+                      width: '22px',
+                      height: '22px',
+                      alignSelf: 'center',
+                    }}
                   />
                   <Typography variant="body2">Puppey</Typography>
                 </Box>
@@ -545,7 +610,11 @@ export default function Sery() {
           <Typography
             variant="body2"
             color="orange"
-            sx={{ outline: 'solid orange', width: '25%', textAlign: 'center' }}
+            sx={{
+              outline: 'solid orange',
+              width: '25%',
+              textAlign: 'center',
+            }}
           >
             Builds
           </Typography>
@@ -708,8 +777,7 @@ export default function Sery() {
           </Typography>
         </Stack>
       </Box>
-
-      <div style={{ height: '80px', width: '100%' }}></div>
-    </Box>
+      {/* </ApolloProvider> */}
+    </>
   );
 }

@@ -5,16 +5,17 @@ import Image from 'next/image';
 
 export default function Game() {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexFlow: 'column nowrap',
-        // justifyContent: 'space-between',
-        // alignItems: 'center',
-        px: '0.5rem',
-        flexGrow: 1,
-      }}
-    >
+    // <Box
+    //   sx={{
+    //     display: 'flex',
+    //     flexFlow: 'column nowrap',
+    //     // justifyContent: 'space-between',
+    //     // alignItems: 'center',
+    //     px: '0.5rem',
+    //     flexGrow: 1,
+    //   }}
+    // >
+    <>
       <Typography variant="body1" sx={{ my: 2 }}>
         TI2022 - Secret vs Tundra Esports
       </Typography>
@@ -496,8 +497,8 @@ export default function Game() {
         </Box>
         {/* right  */}
       </Box>
-
-      <div style={{ height: '80px', width: '100%' }}></div>
-    </Box>
+    </>
+    // <div style={{ height: '80px', width: '100%' }}></div>
+    // </Box>
   );
 }

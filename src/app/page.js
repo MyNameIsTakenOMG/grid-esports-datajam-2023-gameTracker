@@ -12,16 +12,7 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexFlow: 'column nowrap',
-        // justifyContent: 'space-between',
-        alignItems: 'center',
-        flexGrow: 1,
-      }}
-    >
-      {/* <Box sx={{ width: '100%', height: '100%' }}> */}
+    <>
       {/* tournaments section  */}
       <Box sx={{ display: 'flex', flexFlow: 'column nowrap', mb: 4 }}>
         <Box
@@ -163,9 +154,6 @@ export default function Home() {
           sx={{ mb: '0.5rem', alignSelf: 'center' }}
         />
       </Box>
-
-      <div style={{ height: '80px', width: '100%' }}></div>
-      {/* </Box> */}
-    </Box>
+    </>
   );
 }
