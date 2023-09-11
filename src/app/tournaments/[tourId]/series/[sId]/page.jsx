@@ -1,6 +1,15 @@
 'use client';
 
-import { Box, Chip, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
+import {
+  Badge,
+  Box,
+  Chip,
+  Paper,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import React, { useState } from 'react';
 import Image from 'next/image';
@@ -571,7 +580,9 @@ export default function Sery() {
                   mr: '0.5rem',
                 }}
               >
-                <AccountCircleIcon sx={{ width: '45px', height: '45px' }} />
+                <Badge badgeContent={12} color="warning">
+                  <AccountCircleIcon sx={{ width: '45px', height: '45px' }} />
+                </Badge>
                 <Typography>Puppey</Typography>
                 <Image
                   style={{
@@ -586,40 +597,50 @@ export default function Sery() {
                   src="/hero/lion.webp"
                 />
               </Box>
-              <Grid container sx={{ flexGrow: 1 }}>
-                <Grid xs={4}>
-                  <Image
-                    width={38}
-                    height={25}
-                    alt="item_butterfly"
-                    src="/item/item_butterfly.webp"
-                  />
+              {/* items  */}
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: 'flex',
+                  flexFlow: 'row nowrap',
+                  justifyContent: 'center',
+                }}
+              >
+                <Grid container>
+                  <Grid xs={4}>
+                    <Image
+                      width={38}
+                      height={25}
+                      alt="item_butterfly"
+                      src="/item/item_butterfly.webp"
+                    />
+                  </Grid>
+                  <Grid xs={4}>
+                    <Image
+                      width={38}
+                      height={25}
+                      alt="item_butterfly"
+                      src="/item/item_butterfly.webp"
+                    />
+                  </Grid>
+                  <Grid xs={4}>
+                    <Image
+                      width={38}
+                      height={25}
+                      alt="item_butterfly"
+                      src="/item/item_butterfly.webp"
+                    />
+                  </Grid>
+                  <Grid xs={4}>
+                    <Image
+                      width={38}
+                      height={25}
+                      alt="item_butterfly"
+                      src="/item/item_butterfly.webp"
+                    />
+                  </Grid>
                 </Grid>
-                <Grid xs={4}>
-                  <Image
-                    width={38}
-                    height={25}
-                    alt="item_butterfly"
-                    src="/item/item_butterfly.webp"
-                  />
-                </Grid>
-                <Grid xs={4}>
-                  <Image
-                    width={38}
-                    height={25}
-                    alt="item_butterfly"
-                    src="/item/item_butterfly.webp"
-                  />
-                </Grid>
-                <Grid xs={4}>
-                  <Image
-                    width={38}
-                    height={25}
-                    alt="item_butterfly"
-                    src="/item/item_butterfly.webp"
-                  />
-                </Grid>
-              </Grid>
+              </Box>
             </Stack>
 
             {/* player & Stats ( Golds and KDA)  */}
@@ -672,7 +693,7 @@ export default function Sery() {
             border: '1px solid black',
             borderRadius: '5px',
             alignSelf: 'center',
-            width: '80%',
+            width: '90%',
             my: 2,
             p: 1,
           }}

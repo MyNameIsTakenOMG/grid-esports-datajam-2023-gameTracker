@@ -2,6 +2,7 @@ const { createSlice } = require('@reduxjs/toolkit');
 
 const liveGameDataSlice = createSlice({
   initialState: {
+    eventsLogs: [],
     id: '', // 'awfeasdawfersw-awefaweed-waf-waf
     sequenceNumber: null, // 1,2,3,4...
     map: {
@@ -74,6 +75,7 @@ const liveGameDataSlice = createSlice({
         drafter: {
           id: '', // '450'
           type: '', // 'team'
+          name: '', // team name
         },
         draftable: {
           id: '', // "leshrac"
