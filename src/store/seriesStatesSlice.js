@@ -124,7 +124,7 @@ const seriesStatesSlice = createSlice({
     //   // other games (finished or unfinished) ...
     // ],
     data: null,
-    isLoading: false,
+    isLoading: true,
     error: null,
   },
   name: 'series',
@@ -153,7 +153,15 @@ export default seriesStatesSlice.reducer;
 export const { initialize } = seriesStatesSlice.actions;
 
 // selectors
-export const seriesStates = createSelector(
-  (state) => state.series,
-  (series) => series.data
+export const seriesStatesData = createSelector(
+  (state) => state.entities.seriesStates,
+  (seriesStates) => seriesStates.data
+);
+export const seriesStatesLoading = createSelector(
+  (state) => state.entities.seriesStates,
+  (seriesStates) => seriesStates.isLoading
+);
+export const seriesStatesError = createSelector(
+  (state) => state.entities.seriesStates,
+  (seriesStates) => seriesStates.error
 );

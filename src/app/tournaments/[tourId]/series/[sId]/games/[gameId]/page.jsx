@@ -1,27 +1,116 @@
-import { Badge, Box, Grid, Paper, Stack, Typography } from '@mui/material';
+'use client';
+
+import {
+  Badge,
+  Box,
+  Grid,
+  Paper,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
+import { useParams } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  fetchTeamInfo,
+  liveGameData,
+  liveGameError,
+  liveGameLoading,
+  messageReceived,
+} from '@/store/liveGameDataSlice';
 
 export default function Game() {
+  const params = useParams(); // grap seriesId and game id, used to connect to
+  // websocket server and receive events
+
+  const dispatch = useDispatch();
+
+  const liveData = useSelector(liveGameData);
+  const liveLoading = useSelector(liveGameLoading);
+  const liveError = useSelector(liveGameError);
+
+  // fetch teams information
+  useEffect(() => {
+    dispatch(fetchTeamInfo(params.sId));
+  }, []);
+
+  useEffect(() => {
+    let wsClient = new WebSocket(`ws://localhost:8080/${params.sId}`);
+    if (!liveLoading && !liveError) {
+      wsClient.addEventListener('open', (e) => {
+        wsClient.send(
+          JSON.stringify({ sequenceNumber: parseInt(params.gameId) })
+        );
+      });
+      wsClient.addEventListener('message', (e) => {
+        console.log('message received from server: ', e.data);
+        dispatch(messageReceived(JSON.parse(e.data)));
+      });
+    }
+
+    return () => {
+      // wsClient.close();
+    };
+  }, [liveLoading, liveError]);
+
+  if (liveLoading)
+    return (
+      <>
+        <Skeleton
+          variant="rounded"
+          height={120}
+          width="80%"
+          sx={{ maxWidth: '450px', mb: 3 }}
+        />
+        <Skeleton
+          variant="rounded"
+          height={120}
+          width="80%"
+          sx={{ maxWidth: '450px', mb: 3 }}
+        />
+        <Skeleton
+          variant="rounded"
+          height={120}
+          width="80%"
+          sx={{ maxWidth: '450px', mb: 3 }}
+        />
+      </>
+    );
+
+  if (liveError)
+    return (
+      <Typography
+        variant="h6"
+        sx={{
+          p: '1rem',
+          color: 'white',
+          background: 'red',
+          borderRadius: '5px',
+        }}
+      >
+        Error...
+      </Typography>
+    );
+
   return (
-    // <Box
-    //   sx={{
-    //     display: 'flex',
-    //     flexFlow: 'column nowrap',
-    //     // justifyContent: 'space-between',
-    //     // alignItems: 'center',
-    //     px: '0.5rem',
-    //     flexGrow: 1,
-    //   }}
-    // >
     <>
       <Typography variant="body1" sx={{ my: 2 }}>
-        TI2022 - Secret vs Tundra Esports
+        TI2022 - {liveData.teams[0].name} vs {liveData.teams[1].name}
       </Typography>
 
       {/* result-board  */}
-      <Box sx={{ display: 'flex', flexFlow: 'row nowrap', mb: 2 }}>
+      <Box
+        sx={{
+          width: '80%',
+          maxWidth: '600px',
+          display: 'flex',
+          flexFlow: 'row nowrap',
+          mb: 2,
+        }}
+      >
         <Paper
           sx={{
             width: '35%',
@@ -35,11 +124,13 @@ export default function Game() {
             <Image
               width="50"
               height="50"
-              alt="Secret"
-              src="/team/Secret-logo.png"
+              alt={liveData.teams[0].name}
+              src={`/team/${liveData.teams[0].name
+                .toLowerCase()
+                .replaceAll(' ', '-')}-logo.png`}
             />
           </Box>
-          <Typography variant="body1">Secret</Typography>
+          <Typography variant="body1">{liveData.teams[0].name}</Typography>
         </Paper>
 
         <Box
@@ -51,27 +142,12 @@ export default function Game() {
             justifyContent: 'center',
           }}
         >
-          <Typography variant="body2">Game 1</Typography>
+          <Typography variant="body2">Game {params.gameId}</Typography>
           <Stack direction={'row'}>
-            <Typography variant="h6" color={'green'}>
-              Win
-            </Typography>
-            <Typography variant="h6">:</Typography>
             <Typography variant="h6" color={'red'}>
-              Lose
+              VS
             </Typography>
           </Stack>
-          <Typography
-            variant="body2"
-            sx={{
-              backgroundColor: 'grey',
-              color: 'white',
-              borderRadius: '5px',
-              textAlign: 'center',
-            }}
-          >
-            Ended
-          </Typography>
         </Box>
 
         <Paper
@@ -87,12 +163,14 @@ export default function Game() {
             <Image
               width="50"
               height="50"
-              alt="Secret"
-              src="/team/tundra-esports-logo.png"
+              alt={liveData.teams[1].name}
+              src={`/team/${liveData.teams[1].name
+                .toLowerCase()
+                .replaceAll(' ', '-')}-logo.png`}
             />
           </Box>
           <Typography variant="body1" sx={{ textAlign: 'center' }}>
-            Tundra Esports
+            {liveData.teams[1].name}
           </Typography>
         </Paper>
       </Box>
@@ -101,404 +179,346 @@ export default function Game() {
       <Stack
         direction="column-reverse"
         sx={{
-          border: '1px solid black',
+          outline: '1px solid orange',
           borderRadius: '5px',
           alignSelf: 'center',
-          width: '90%',
+          width: '80%',
+          maxWidth: '600px',
           height: '300px',
           my: 2,
           p: 1,
           overflowY: 'auto',
         }}
       >
-        <Typography
-          variant="body2"
-          sx={{ p: 1, borderBottom: '1px solid grey' }}
-        >
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem,
-          optio.
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{ p: 1, borderBottom: '1px solid grey' }}
-        >
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem,
-          optio.
-        </Typography>
+        <Box sx={{ display: 'flex', flexFlow: 'column' }}>
+          {liveData.eventsLogs.map((log, index) => {
+            return (
+              <Typography
+                key={index}
+                variant="body2"
+                sx={{ p: 1, borderBottom: '1px solid orange' }}
+              >
+                {log}
+              </Typography>
+            );
+          })}
+        </Box>
       </Stack>
 
-      {/* ban / pick  */}
-      <Stack direction={'row'} sx={{ my: 2 }}>
-        <Typography sx={{ width: '50%', textAlign: 'center' }}>
-          Secret
-        </Typography>
-        <Typography sx={{ width: '50%', textAlign: 'center' }}>
-          Tundra Esports
-        </Typography>
-      </Stack>
       <Box
         sx={{
+          width: '80%',
+          maxWidth: '600px',
           display: 'flex',
-          flexFlow: 'row nowrap',
-          justifyContent: 'space-between',
-          mb: 2,
+          flexFlow: 'column nowrap',
         }}
       >
-        {/* team 1  */}
+        {/* ban / pick  */}
         <Box
           sx={{
             display: 'flex',
             flexFlow: 'row nowrap',
             justifyContent: 'space-between',
-            width: '45%',
+            mb: 3,
           }}
         >
+          {/* team 1  */}
           <Box
             sx={{
               display: 'flex',
-              flexFlow: 'column nowrap',
-              rowGap: '0.5rem',
+              flexFlow: 'row nowrap',
+              justifyContent: 'space-around',
+              width: '45%',
             }}
           >
-            {/* <Typography>Bans</Typography> */}
-            <Image width={38} height={25} alt="lion" src="/hero/lion.webp" />
-            <Image width={38} height={25} alt="lion" src="/hero/lion.webp" />
-            <Image width={38} height={25} alt="lion" src="/hero/lion.webp" />
-            <Image width={38} height={25} alt="lion" src="/hero/lion.webp" />
-            <Image width={38} height={25} alt="lion" src="/hero/lion.webp" />
-            <Image width={38} height={25} alt="lion" src="/hero/lion.webp" />
-            <Image width={38} height={25} alt="lion" src="/hero/lion.webp" />
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexFlow: 'column nowrap',
-              rowGap: '0.5rem',
-            }}
-          >
-            {/* <Typography>Picks</Typography> */}
             <Box
               sx={{
-                display: 'flex',
-                flexFlow: 'row nowrap',
-                alignItems: 'center',
-              }}
-            >
-              <Image width={45} height={30} alt="lion" src="/hero/lion.webp" />
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexFlow: 'column nowrap',
-                }}
-              >
-                <AccountCircleIcon
-                  sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
-                />
-                <Typography variant="body2">Puppey</Typography>
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexFlow: 'row nowrap',
-                alignItems: 'center',
-              }}
-            >
-              <Image width={45} height={30} alt="lion" src="/hero/lion.webp" />
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexFlow: 'column nowrap',
-                }}
-              >
-                <AccountCircleIcon
-                  sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
-                />
-                <Typography variant="body2">Puppey</Typography>
-              </Box>
-            </Box>{' '}
-            <Box
-              sx={{
-                display: 'flex',
-                flexFlow: 'row nowrap',
-                alignItems: 'center',
-              }}
-            >
-              <Image width={45} height={30} alt="lion" src="/hero/lion.webp" />
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexFlow: 'column nowrap',
-                }}
-              >
-                <AccountCircleIcon
-                  sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
-                />
-                <Typography variant="body2">Puppey</Typography>
-              </Box>
-            </Box>{' '}
-            <Box
-              sx={{
-                display: 'flex',
-                flexFlow: 'row nowrap',
-                alignItems: 'center',
-              }}
-            >
-              <Image width={45} height={30} alt="lion" src="/hero/lion.webp" />
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexFlow: 'column nowrap',
-                }}
-              >
-                <AccountCircleIcon
-                  sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
-                />
-                <Typography variant="body2">Puppey</Typography>
-              </Box>
-            </Box>{' '}
-            <Box
-              sx={{
-                display: 'flex',
-                flexFlow: 'row nowrap',
-                alignItems: 'center',
-              }}
-            >
-              <Image width={45} height={30} alt="lion" src="/hero/lion.webp" />
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexFlow: 'column nowrap',
-                }}
-              >
-                <AccountCircleIcon
-                  sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
-                />
-                <Typography variant="body2">Puppey</Typography>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-        {/* team 2  */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexFlow: 'row nowrap',
-            justifyContent: 'space-between',
-            width: '45%',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexFlow: 'column nowrap',
-              rowGap: '0.5rem',
-            }}
-          >
-            {/* <Typography>Bans</Typography> */}
-            <Image width={38} height={25} alt="lion" src="/hero/lion.webp" />
-            <Image width={38} height={25} alt="lion" src="/hero/lion.webp" />
-            <Image width={38} height={25} alt="lion" src="/hero/lion.webp" />
-            <Image width={38} height={25} alt="lion" src="/hero/lion.webp" />
-            <Image width={38} height={25} alt="lion" src="/hero/lion.webp" />
-            <Image width={38} height={25} alt="lion" src="/hero/lion.webp" />
-            <Image width={38} height={25} alt="lion" src="/hero/lion.webp" />
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexFlow: 'column nowrap',
-              rowGap: '0.5rem',
-            }}
-          >
-            {/* <Typography>Picks</Typography> */}
-            <Box
-              sx={{
-                display: 'flex',
-                flexFlow: 'row nowrap',
-                alignItems: 'center',
-              }}
-            >
-              <Image width={45} height={30} alt="lion" src="/hero/lion.webp" />
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexFlow: 'column nowrap',
-                }}
-              >
-                <AccountCircleIcon
-                  sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
-                />
-                <Typography variant="body2">Puppey</Typography>
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexFlow: 'row nowrap',
-                alignItems: 'center',
-              }}
-            >
-              <Image width={45} height={30} alt="lion" src="/hero/lion.webp" />
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexFlow: 'column nowrap',
-                }}
-              >
-                <AccountCircleIcon
-                  sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
-                />
-                <Typography variant="body2">Puppey</Typography>
-              </Box>
-            </Box>{' '}
-            <Box
-              sx={{
-                display: 'flex',
-                flexFlow: 'row nowrap',
-                alignItems: 'center',
-              }}
-            >
-              <Image width={45} height={30} alt="lion" src="/hero/lion.webp" />
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexFlow: 'column nowrap',
-                }}
-              >
-                <AccountCircleIcon
-                  sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
-                />
-                <Typography variant="body2">Puppey</Typography>
-              </Box>
-            </Box>{' '}
-            <Box
-              sx={{
-                display: 'flex',
-                flexFlow: 'row nowrap',
-                alignItems: 'center',
-              }}
-            >
-              <Image width={45} height={30} alt="lion" src="/hero/lion.webp" />
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexFlow: 'column nowrap',
-                }}
-              >
-                <AccountCircleIcon
-                  sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
-                />
-                <Typography variant="body2">Puppey</Typography>
-              </Box>
-            </Box>{' '}
-            <Box
-              sx={{
-                display: 'flex',
-                flexFlow: 'row nowrap',
-                alignItems: 'center',
-              }}
-            >
-              <Image width={45} height={30} alt="lion" src="/hero/lion.webp" />
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexFlow: 'column nowrap',
-                }}
-              >
-                <AccountCircleIcon
-                  sx={{ width: '22px', height: '22px', alignSelf: 'center' }}
-                />
-                <Typography variant="body2">Puppey</Typography>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-
-      {/* stats board  */}
-      <Box sx={{ display: 'flex', flexFlow: 'row nowrap' }}>
-        {/* left  */}
-        <Box sx={{ width: '50%', display: 'flex', flexFlow: 'column nowrap' }}>
-          {/* player & hero & builds */}
-          <Box sx={{ display: 'flex', flexFlow: 'row nowrap' }}>
-            <Box
-              sx={{
-                position: 'relative',
                 display: 'flex',
                 flexFlow: 'column nowrap',
-                alignItems: 'center',
-                mr: '0.5rem',
+                rowGap: '0.5rem',
               }}
             >
-              <Badge badgeContent={12} color="warning">
-                <AccountCircleIcon sx={{ width: '45px', height: '45px' }} />
-              </Badge>
-              <Typography>Puppey</Typography>
-              <Image
-                style={{
-                  position: 'absolute',
-                  top: 20,
-                  right: 0,
-                  borderRadius: '50%',
-                }}
-                width={25}
-                height={25}
-                alt="lion"
-                src="/hero/lion.webp"
-              />
+              <Typography>Bans</Typography>
+              {liveData.draftActions.map((draft, index) => {
+                let t1 = liveData.teams[0].id;
+                if (t1 === draft.drafter.id && draft.type === 'banned') {
+                  return (
+                    <Image
+                      key={index}
+                      width={38}
+                      height={25}
+                      alt={draft.draftable.id}
+                      src={`/hero/${draft.draftable.id}.webp`}
+                    />
+                  );
+                }
+              })}
             </Box>
-            {/* items  */}
             <Box
               sx={{
-                // flexGrow: 1,
                 display: 'flex',
-                flexFlow: 'row nowrap',
-                border: '1px solid black',
-                justifyContent: 'center',
+                flexFlow: 'column nowrap',
+                rowGap: '0.5rem',
               }}
             >
-              <Grid container>
-                <Grid xs={4}>
-                  <Image
-                    width={38}
-                    height={25}
-                    alt="item_butterfly"
-                    src="/item/item_butterfly.webp"
-                  />
-                </Grid>
-                <Grid xs={4}>
-                  <Image
-                    width={38}
-                    height={25}
-                    alt="item_butterfly"
-                    src="/item/item_butterfly.webp"
-                  />
-                </Grid>
-                <Grid xs={4}>
-                  <Image
-                    width={38}
-                    height={25}
-                    alt="item_butterfly"
-                    src="/item/item_butterfly.webp"
-                  />
-                </Grid>
-                <Grid xs={4}>
-                  <Image
-                    width={38}
-                    height={25}
-                    alt="item_butterfly"
-                    src="/item/item_butterfly.webp"
-                  />
-                </Grid>
-              </Grid>
+              <Typography>Picks</Typography>
+              {liveData.draftActions.map((draft, index) => {
+                let t1 = liveData.teams[0].id;
+                if (t1 === draft.drafter.id && draft.type === 'picked') {
+                  return (
+                    <Image
+                      key={index}
+                      width={45}
+                      height={30}
+                      alt={draft.draftable.id}
+                      src={`/hero/${draft.draftable.id}.webp`}
+                    />
+                  );
+                }
+              })}
+            </Box>
+          </Box>
+          {/* team 2  */}
+          <Box
+            sx={{
+              display: 'flex',
+              flexFlow: 'row nowrap',
+              justifyContent: 'space-around',
+              width: '45%',
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexFlow: 'column nowrap',
+                rowGap: '0.5rem',
+              }}
+            >
+              <Typography>Bans</Typography>
+              {liveData.draftActions.map((draft, index) => {
+                let t1 = liveData.teams[1].id;
+                if (t1 === draft.drafter.id && draft.type === 'banned') {
+                  return (
+                    <Image
+                      key={index}
+                      width={38}
+                      height={25}
+                      alt={draft.draftable.id}
+                      src={`/hero/${draft.draftable.id}.webp`}
+                    />
+                  );
+                }
+              })}
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexFlow: 'column nowrap',
+                rowGap: '0.5rem',
+              }}
+            >
+              <Typography>Picks</Typography>
+              {liveData.draftActions.map((draft, index) => {
+                let t1 = liveData.teams[1].id;
+                if (t1 === draft.drafter.id && draft.type === 'picked') {
+                  return (
+                    <Image
+                      key={index}
+                      width={45}
+                      height={30}
+                      alt={draft.draftable.id}
+                      src={`/hero/${draft.draftable.id}.webp`}
+                    />
+                  );
+                }
+              })}
             </Box>
           </Box>
         </Box>
-        {/* right  */}
+
+        {/* players stats  */}
+        <Box sx={{ display: 'flex', flexFlow: 'row nowrap', mb: 1 }}>
+          {/* left - team1  */}
+          <Box
+            sx={{
+              width: '50%',
+              display: 'flex',
+              flexFlow: 'column nowrap',
+              rowGap: '1rem',
+            }}
+          >
+            {/* player & hero & builds */}
+            {liveData.teams[0].players.map((player, index) => {
+              return (
+                <Stack
+                  key={index}
+                  direction={'row'}
+                  sx={{ justifyContent: 'space-between' }}
+                >
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      display: 'flex',
+                      flexFlow: 'column nowrap',
+                      alignItems: 'center',
+                      mr: '1rem',
+                      width: '30%',
+                    }}
+                  >
+                    <Badge
+                      badgeContent={
+                        player.objectives
+                          ? player.objectives[0].completionCount + 1
+                          : 1
+                      }
+                      color="warning"
+                    >
+                      <AccountCircleIcon
+                        sx={{ width: '45px', height: '45px' }}
+                      />
+                    </Badge>
+                    <Typography>{player.name}</Typography>
+                    <Typography>
+                      {player.kills ? player.kills : 0}/
+                      {player.deaths ? player.deaths : 0}/
+                      {player.killAssistsGiven ? player.killAssistsGiven : 0}
+                    </Typography>
+                    <Image
+                      style={{
+                        position: 'absolute',
+                        top: 20,
+                        right: 0,
+                        borderRadius: '50%',
+                      }}
+                      width={25}
+                      height={25}
+                      alt={player.character}
+                      src={`/hero/${player.character}.webp`}
+                    />
+                  </Box>
+                  {/* items  */}
+                  <Box
+                    sx={{
+                      // flexGrow: 1,
+                      width: '70%',
+                      display: 'flex',
+                      flexFlow: 'row nowrap',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Grid container>
+                      {player.items &&
+                        player.items.map((item, index) => {
+                          if (item.equipped)
+                            return (
+                              <Grid xs={4} key={index}>
+                                <Image
+                                  width={38}
+                                  height={25}
+                                  alt={item.id}
+                                  src={`/item/${item.id}.webp`}
+                                />
+                              </Grid>
+                            );
+                        })}
+                    </Grid>
+                  </Box>
+                </Stack>
+              );
+            })}
+          </Box>
+
+          {/* right- team2  */}
+          <Box
+            sx={{
+              width: '50%',
+              display: 'flex',
+              flexFlow: 'column nowrap',
+              rowGap: '1rem',
+            }}
+          >
+            {/* player & hero & builds */}
+            {liveData.teams[1].players.map((player, index) => {
+              return (
+                <Stack
+                  key={index}
+                  direction={'row-reverse'}
+                  sx={{ justifyContent: 'space-between' }}
+                >
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      display: 'flex',
+                      flexFlow: 'column nowrap',
+                      alignItems: 'center',
+                      mr: '1rem',
+                      width: '30%',
+                    }}
+                  >
+                    <Badge
+                      badgeContent={
+                        player.objectives
+                          ? player.objectives[0].completionCount + 1
+                          : 1
+                      }
+                      color="warning"
+                    >
+                      <AccountCircleIcon
+                        sx={{ width: '45px', height: '45px' }}
+                      />
+                    </Badge>
+                    <Typography>{player.name}</Typography>
+                    <Typography>
+                      {player.kills ? player.kills : 0}/
+                      {player.deaths ? player.deaths : 0}/
+                      {player.killAssistsGiven ? player.killAssistsGiven : 0}
+                    </Typography>
+                    <Image
+                      style={{
+                        position: 'absolute',
+                        top: 20,
+                        right: 0,
+                        borderRadius: '50%',
+                      }}
+                      width={25}
+                      height={25}
+                      alt={player.character}
+                      src={`/hero/${player.character}.webp`}
+                    />
+                  </Box>
+                  {/* items  */}
+                  <Box
+                    sx={{
+                      // flexGrow: 1,
+                      width: '70%',
+                      display: 'flex',
+                      flexFlow: 'row nowrap',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Grid container>
+                      {player.items &&
+                        player.items.map((item, index) => {
+                          if (item.equipped)
+                            return (
+                              <Grid xs={4} key={index}>
+                                <Image
+                                  width={38}
+                                  height={25}
+                                  alt={item.id}
+                                  src={`/item/${item.id}.webp`}
+                                />
+                              </Grid>
+                            );
+                        })}
+                    </Grid>
+                  </Box>
+                </Stack>
+              );
+            })}
+          </Box>
+        </Box>
       </Box>
     </>
-    // <div style={{ height: '80px', width: '100%' }}></div>
-    // </Box>
   );
 }

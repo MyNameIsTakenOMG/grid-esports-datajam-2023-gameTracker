@@ -1,8 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import seriesReducer from './seriesStatesSlice';
+import reducer from './reducer';
 
 export default configureStore({
-  reducer: {
-    series: seriesReducer,
-  },
+  reducer: reducer,
 });

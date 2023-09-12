@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Box,
   Card,
@@ -9,8 +11,11 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <>
       {/* tournaments section  */}
@@ -23,12 +28,19 @@ export default function Home() {
             variant="body1"
             color="orange"
             sx={{ cursor: 'pointer', '&:hover': { color: 'orangered' } }}
+            onClick={() => {
+              router.push('/tournaments');
+            }}
           >
             More...
           </Typography>
         </Box>
         <Card sx={{ width: 345, alignSelf: 'center' }}>
-          <CardActionArea>
+          <CardActionArea
+            onClick={() => {
+              router.push('/tournaments/The International 2022');
+            }}
+          >
             <CardMedia
               height="140"
               component="img"
@@ -56,7 +68,14 @@ export default function Home() {
             More...
           </Typography>
         </Box>
-        <Card sx={{ width: 345, alignSelf: 'center' }}>
+
+        <Skeleton
+          variant="rounded"
+          width="345px"
+          height="160px"
+          sx={{ mb: '0.5rem', alignSelf: 'center' }}
+        />
+        {/* <Card sx={{ width: 345, alignSelf: 'center' }}>
           <CardActionArea>
             <Box sx={{ display: 'flex', flexFlow: 'column nowrap' }}>
               <Typography
@@ -118,7 +137,7 @@ export default function Home() {
               </Box>
             </Box>
           </CardActionArea>
-        </Card>
+        </Card> */}
       </Box>
 
       {/* rankings section  */}

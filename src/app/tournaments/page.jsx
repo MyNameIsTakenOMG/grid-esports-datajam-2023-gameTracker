@@ -31,7 +31,7 @@ export default function Tournaments() {
           <Card sx={{ width: 345, alignSelf: 'center', mb: 4 }}>
             <CardActionArea
               onClick={() => {
-                router.push(`/tournaments/${t}`);
+                router.push(`/tournaments/${tournaments[0]}`);
               }}
             >
               <CardMedia height="160" component="img" alt={t} image={imgPath} />

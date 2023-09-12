@@ -77,7 +77,7 @@ export default function Nav() {
             },
           }}
           onClick={() => {
-            router.push('/matches');
+            // router.push('/matches');
           }}
         >
           <SportsMmaIcon />
@@ -107,7 +107,7 @@ export default function Nav() {
             },
           }}
           onClick={() => {
-            router.push('/rankings');
+            // router.push('/rankings');
           }}
         >
           <StarsIcon />
@@ -137,7 +137,7 @@ export default function Nav() {
             },
           }}
           onClick={() => {
-            router.push('/account');
+            // router.push('/account');
           }}
         >
           <AccountCircleIcon />

@@ -5,6 +5,21 @@ export const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+export const fetchTeamInfoQuery = gql`
+  query ($seriesId: String!) {
+    series(seriesId: $seriesId) {
+      teams {
+        id
+        name
+        players {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const fetchSeriesStatesQuery = gql`
   query ($seriesId: String!) {
     series(seriesId: $seriesId) {
@@ -52,7 +67,7 @@ export const fetchSeriesStatesQuery = gql`
             }
           }
         }
-        dratfActions {
+        draftActions {
           sequenceNumber
           type
           drafter {
